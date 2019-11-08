@@ -4,17 +4,31 @@ import (
 	"sort"
 )
 
-func PackCalculator(order int, packs []int) map[int]int {
+// PackCalculator calculates the minimum amount of items to
+// send to a user, while also sending out as few packs as possible
+// and never using partial packs.
+func PackCalculator(orderAmount int, packs []int) map[int]int {
+	selected := make(map[int]int)
+
+	// If this is 0, we just return an empty selection of packs.
+	// This is about 4x more efficient than letting the order
+	// for 0 proceed through the rest of the algorithm.
+	if orderAmount == 0 {
+		return selected
+	}
+
 	sort.Sort(sort.Reverse(sort.IntSlice(packs)))
 
+	// Calculate the orderAmount rounded up to the
+	// closest number of the smallest pack that fit into it.
+	// eg, 501 becomes 750 if the smallest pack is 250
 	smallest := packs[len(packs) - 1]
-	divisible := (order + smallest - 1) / smallest
-	newOrder := divisible * smallest
+	timesDivisible := (orderAmount + smallest - 1) / smallest
+	newOrderAmount := timesDivisible * smallest
 
-	selected := map[int]int{}
 	for _, pack := range packs {
-		for newOrder >= pack {
-			newOrder -= pack
+		for newOrderAmount >= pack {
+			newOrderAmount -= pack
 			selected[pack]++
 		}
 	}

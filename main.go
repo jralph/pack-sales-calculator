@@ -6,10 +6,14 @@ import (
 	"strconv"
 	"strings"
 
-	"gymshark-test/calculator"
+	"pack-sales-calculator/calculator"
 )
 
 func main() {
+	runAsCliTool()
+}
+
+func runAsCliTool() {
 	orderString := os.Args[1]
 	availablePacks := os.Args[2]
 

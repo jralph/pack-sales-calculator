@@ -1,4 +1,4 @@
-module gymshark-test
+module pack-sales-calculator
 
 go 1.13
 
