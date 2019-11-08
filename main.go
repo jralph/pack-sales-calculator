@@ -1,8 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"os"
+	"net/http"
 	"strconv"
 	"strings"
 
@@ -10,12 +11,23 @@ import (
 )
 
 func main() {
-	runAsCliTool()
+	port := flag.Int("port", 9787, "The port to run the server on.")
+	flag.Parse()
+
+	mode := flag.Args()[0]
+
+	if mode == "cli" {
+		runAsCliTool(flag.Args()[0:])
+	}
+
+	if mode == "api" {
+		runAsWebApi(flag.Args()[0:], *port)
+	}
 }
 
-func runAsCliTool() {
-	orderString := os.Args[1]
-	availablePacks := os.Args[2]
+func runAsCliTool(args []string) {
+	orderString := args[1]
+	availablePacks := args[2]
 
 	order, err := strconv.Atoi(orderString)
 	if err != nil {
@@ -35,4 +47,8 @@ func runAsCliTool() {
 	}
 
 	fmt.Println(calculator.PackCalculator(order, packs))
+}
+
+func runAsWebApi(args []string, port int) {
+	
 }
