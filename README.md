@@ -8,13 +8,11 @@ The algorithm used rounds up the order to the nearest number of the smallest pac
 
 As I have done this test before, I focused on making the algorithm as efficient as possible, and have included tests and benchmarks. The algorithm only makes a total of 4 memory allocations and is memory efficient.
 
-If the algorithm 
-
 ```
 go test -bench=. -benchmem ./...
 ```
 
-These are the results received on my rather old macbook pro:
+These are the results received on my rather old 2013 macbook pro:
 
 ```
 BenchmarkPackCalculator0WithDefault-4             	19853205	        59.3 ns/op	      48 B/op	       1 allocs/op
@@ -52,3 +50,15 @@ The web service exposes one endpoint, a post endpoint that accpets 2 query param
 
 - `order` *REQUIRED* The order number. This must be a positive non-zero integer.
 - `packs` *OPTIONAL* The packs to use. This must be a comma seperated list of integers. Default: 250,500,1000,2000,5000
+
+Example With Default Packs:
+
+```
+curl -X POST "https://hubfys30s9.execute-api.eu-west-2.amazonaws.com/dev/calculate?order=12001"
+```
+
+Example With Custom Packs:
+
+```
+curl -X POST "https://hubfys30s9.execute-api.eu-west-2.amazonaws.com/dev/calculate?order=51&packs=5,10,20"
+```
