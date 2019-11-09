@@ -54,11 +54,11 @@ The web service exposes one endpoint, a post endpoint that accpets 2 query param
 Example With Default Packs:
 
 ```
-curl -X POST "https://hubfys30s9.execute-api.eu-west-2.amazonaws.com/dev/calculate?order=12001"
+curl -X POST "https://rc8nn4w5fb.execute-api.eu-west-2.amazonaws.com/dev/calculate?order=12001"
 ```
 
 Example With Custom Packs:
 
 ```
-curl -X POST "https://hubfys30s9.execute-api.eu-west-2.amazonaws.com/dev/calculate?order=51&packs=5,10,20"
+curl -X POST "https://rc8nn4w5fb.execute-api.eu-west-2.amazonaws.com/dev/calculate?order=51&packs=5,10,20"
 ```
