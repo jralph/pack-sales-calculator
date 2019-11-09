@@ -13,8 +13,8 @@
 
 service: gymshark-test
 # app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+app: gymshark-challenge
+org: jralph
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -24,6 +24,7 @@ frameworkVersion: '>=1.28.0 <2.0.0'
 provider:
   name: aws
   runtime: go1.x
+  region: eu-west-2
 
 package:
   exclude:
@@ -32,13 +33,9 @@ package:
     - ./bin/**
 
 functions:
-  hello:
+  calculate:
     handler: bin/lambda
     events:
       - http:
           path: calculate
           method: post
-          request:
-            patameter:
-              querystrings:
-                name: true

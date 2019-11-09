@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"strconv"
+	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -17,6 +18,15 @@ import (
 type Response events.APIGatewayProxyResponse
 type Request events.APIGatewayProxyRequest
 
+type PackOrder struct {
+	Size int `json:size`
+	Amount int `json:amount`
+}
+
+type CalculateResponse struct {
+	Packs []PackOrder `json:packs`
+}
+
 // Handler is our lambda handler invoked by the `lambda.Start` function call
 func Handler(request Request) (Response, error) {
 	var buf bytes.Buffer
@@ -26,12 +36,56 @@ func Handler(request Request) (Response, error) {
 
 	order, err := strconv.Atoi(orderString)
 	if err != nil {
-		return Response{StatusCode: 500}, err
+		resp := map[string]string{
+			"message": "please specify a valid number for the order request parameter",
+		}
+		body, err := json.Marshal(resp)
+		return Response{StatusCode: 400, Body: string(body)}, err
+	}
+
+	customPacks := request.QueryStringParameters["packs"]
+
+	if len(customPacks) > 0 {
+		packStrings := strings.Split(customPacks, ",")
+
+		var packs []int
+		for _, pack := range packStrings {
+			size, err := strconv.Atoi(pack)
+			if err != nil {
+				resp := map[string]string{
+					"message": "please specify a comma seperated list of numbers for the packs query parameter",
+				}
+				body, err := json.Marshal(resp)
+				return Response{StatusCode: 400, Body: string(body)}, err
+			}
+
+			packs = append(packs, size)
+		}
+		defaultPacks = packs
+	}
+
+	if order < 1 {
+		resp := map[string]string{
+			"message": "please specify a number greater than 0 for the order request parameter",
+		}
+		body, err := json.Marshal(resp)
+		return Response{StatusCode: 400, Body: string(body)}, err
 	}
 
 	packsRequired := calculator.PackCalculator(order, defaultPacks)
 
-	body, err := json.Marshal(packsRequired)
+	respData := CalculateResponse{
+		Packs: []PackOrder{},
+	}
+
+	for pack, amount := range packsRequired {
+		respData.Packs = append(respData.Packs, PackOrder{
+			Size: pack,
+			Amount: amount,
+		})
+	}
+
+	body, err := json.Marshal(respData)
 	if err != nil {
 		return Response{StatusCode: 500}, err
 	}

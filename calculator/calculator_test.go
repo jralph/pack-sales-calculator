@@ -20,6 +20,22 @@ func BenchmarkPackCalculator0WithDefault(b *testing.B) {
 	benchmarkPackCalculator(0, defaultPacks, b)
 }
 
+func BenchmarkPackCalculator1WithDefault(b *testing.B) {
+	benchmarkPackCalculator(1, defaultPacks, b)
+}
+
+func BenchmarkPackCalculator250WithDefault(b *testing.B) {
+	benchmarkPackCalculator(250, defaultPacks, b)
+}
+
+func BenchmarkPackCalculator500WithDefault(b *testing.B) {
+	benchmarkPackCalculator(500, defaultPacks, b)
+}
+
+func BenchmarkPackCalculator1000WithDefault(b *testing.B) {
+	benchmarkPackCalculator(1000, defaultPacks, b)
+}
+
 func BenchmarkPackCalculator12001WithDefault(b *testing.B) {
 	benchmarkPackCalculator(12001, defaultPacks, b)
 }
