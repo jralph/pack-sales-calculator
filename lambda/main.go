@@ -43,6 +43,14 @@ func Handler(request Request) (Response, error) {
 		return Response{StatusCode: 400, Body: string(body)}, err
 	}
 
+	if order > 999999999999 {
+		resp := map[string]string{
+			"message": "web requests are limited to order sizes of 999999999999 for performance and cost",
+		}
+		body, err := json.Marshal(resp)
+		return Response{StatusCode: 400, Body: string(body)}, err
+	}
+
 	customPacks := request.QueryStringParameters["packs"]
 
 	if len(customPacks) > 0 {
