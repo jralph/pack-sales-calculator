@@ -21,6 +21,7 @@ func PackCalculator(orderAmount int, packs []int) (map[int]int, error) {
 	sort.Sort(sort.Reverse(sort.IntSlice(packs)))
 
 	// Remove any negative packs as these are invalid.
+	// If the last/only pack is negative, return an empty selection and error.
 	for i, pack := range packs {
 		if pack <= 0 && len(packs) == 1 {
 			return selected, errors.New("all packs are negative or zero")
