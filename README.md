@@ -12,21 +12,27 @@ As I have done this test before, I focused on making the algorithm as efficient 
 go test -bench=. -benchmem ./...
 ```
 
-These are the results received on my rather old 2013 macbook pro:
+These are the results received are:
 
 ```
-BenchmarkPackCalculator0WithDefault-4             	19853205	        59.3 ns/op	      48 B/op	       1 allocs/op
-BenchmarkPackCalculator1WithDefault-4             	 3933694	       332 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator250WithDefault-4           	 3889850	       301 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator500WithDefault-4           	 3927804	       305 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator1000WithDefault-4          	 3771909	       310 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator12001WithDefault-4         	 3026665	       395 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator12001WithLarge-4           	 3491788	       311 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator47501043056WithDefault-4   	       8	 136161652 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator47501043056WithLarge-4     	     836	   1411947 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator12001WithSmall-4           	  274621	      4024 ns/op	     240 B/op	       4 allocs/op
+goos: darwin
+goarch: amd64
+pkg: pack-sales-calculator/calculator
+BenchmarkPackCalculatorNegativeWithDefault-8      	14820410	        79.3 ns/op	      64 B/op	       2 allocs/op
+BenchmarkPackCalculator0WithDefault-8             	14581399	        79.3 ns/op	      64 B/op	       2 allocs/op
+BenchmarkPackCalculator1WithDefault-8             	 4616272	       242 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator250WithDefault-8           	 4864417	       243 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator500WithDefault-8           	 4673331	       247 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator1000WithDefault-8          	 4915204	       246 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator12001WithDefault-8         	 3785590	       317 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator12001WithLarge-8           	 4900058	       243 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator47501043056WithDefault-8   	       9	 114751263 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator47501043056WithLarge-8     	    1081	   1133706 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator12001WithSmall-8           	  347701	      3158 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator250WithAllNegatives-8      	 6015590	       226 ns/op	     112 B/op	       4 allocs/op
+BenchmarkPackCalculator250WithSomeNegatives-8     	 4249892	       353 ns/op	     240 B/op	       4 allocs/op
 PASS
-ok  	pack-sales-calculator/calculator	14.993s
+ok  	pack-sales-calculator/calculator	18.411s
 ```
 
 ## CLI Usage
