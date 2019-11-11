@@ -16,6 +16,10 @@ func benchmarkPackCalculator(i int, packs []int, b *testing.B) {
 	}
 }
 
+func BenchmarkPackCalculatorNegativeWithDefault(b *testing.B) {
+	benchmarkPackCalculator(-1, defaultPacks, b)
+}
+
 func BenchmarkPackCalculator0WithDefault(b *testing.B) {
 	benchmarkPackCalculator(0, defaultPacks, b)
 }
@@ -56,18 +60,26 @@ func BenchmarkPackCalculator12001WithSmall(b *testing.B) {
 	benchmarkPackCalculator(12001, smallPacks, b)
 }
 
+func BenchmarkPackCalculator250WithAllNegatives(b *testing.B) {
+	benchmarkPackCalculator(250, []int{-100, -200}, b)
+}
+
+func BenchmarkPackCalculator250WithSomeNegatives(b *testing.B) {
+	benchmarkPackCalculator(250, []int{-100, 0, 250, 1000}, b)
+}
+
 func TestPackCalculator_returns0For0(t *testing.T) {
 	result, err := PackCalculator(0, defaultPacks)
 
 	assert.Empty(t, result)
-	assert.Errorf(t, err, "order amount was negative or zero")
+	assert.Error(t, err, "order amount was negative or zero")
 }
 
 func TestPackCalculator_returns0ForNegative(t *testing.T) {
 	result, err := PackCalculator(-1, defaultPacks)
 
 	assert.Empty(t, result)
-	assert.Errorf(t, err, "order amount was negative or zero")
+	assert.Error(t, err, "order amount was negative or zero")
 }
 
 func TestPackCalculator_returns1x250For1(t *testing.T) {
@@ -133,7 +145,7 @@ func TestPackCalculator_handlesPacksOfNegatives(t *testing.T) {
 	result, err := PackCalculator(1000, []int{-250, -100})
 
 	assert.Empty(t, result)
-	assert.Errorf(t, err, "all packs are negative or zero")
+	assert.Error(t, err, "all packs are negative or zero")
 }
 
 func TestPackCalculator_handlesPacksContainingNegatives(t *testing.T) {
@@ -145,11 +157,20 @@ func TestPackCalculator_handlesPacksContainingNegatives(t *testing.T) {
 	assert.Nil(t, err)
 }
 
+func TestPackCalculator_handlesPacksWithSomeNegatives(t *testing.T) {
+	result, err := PackCalculator(250, []int{-100, -200, 250, 1000})
+
+	assert.Equal(t, map[int]int{
+		250: 1,
+	}, result)
+	assert.Nil(t, err)
+}
+
 func TestPackCalculator_handlesPacksOfZero(t *testing.T) {
 	result, err := PackCalculator(1000, []int{0})
 
 	assert.Empty(t, result)
-	assert.Errorf(t, err, "all packs are negative or zero")
+	assert.Error(t, err, "all packs are negative or zero")
 }
 
 func TestPackCalculator_handlesPacksContainingZero(t *testing.T) {
@@ -159,4 +180,11 @@ func TestPackCalculator_handlesPacksContainingZero(t *testing.T) {
 		250: 1,
 	}, result)
 	assert.Nil(t, err)
+}
+
+func TestPackCalculator_handlesNoPacksGiven(t *testing.T) {
+	result, err := PackCalculator(250, []int{})
+
+	assert.Empty(t, result)
+	assert.Error(t, err, "no packs provided")
 }

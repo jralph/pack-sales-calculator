@@ -11,24 +11,32 @@ import (
 func PackCalculator(orderAmount int, packs []int) (map[int]int, error) {
 	selected := make(map[int]int)
 
-	// If this is 0, we just return an empty selection of packs.
+	// If this is 0, we just return an empty selection of packs and an error.
 	// This is about 4x more efficient than letting the order
 	// for 0 proceed through the rest of the algorithm.
 	if orderAmount <= 0 {
 		return selected, errors.New("order amount was negative or zero")
 	}
 
+	// If we have no packs, return an empty selection and error.
+	if len(packs) == 0 {
+		return selected, errors.New("no packs provided")
+	}
+
 	sort.Sort(sort.Reverse(sort.IntSlice(packs)))
 
 	// Remove any negative packs as these are invalid.
-	// If the last/only pack is negative, return an empty selection and error.
-	for i, pack := range packs {
-		if pack <= 0 && len(packs) == 1 {
-			return selected, errors.New("all packs are negative or zero")
-		} else if pack <= 0 {
-			copy(packs[i:], packs[i+1:])
-			packs = packs[:len(packs)-1]
+	for i := 0; i < len(packs); i++ {
+		if packs[i] <= 0 {
+			packs = append(packs[:i], packs[i+1:]...)
+			i--
 		}
+	}
+
+	// If we now have no packs, that is because they are all negative
+	// or zero.
+	if len(packs) == 0 {
+		return selected, errors.New("all packs are negative or zero")
 	}
 
 	smallest := packs[len(packs) - 1]
