@@ -80,7 +80,14 @@ func Handler(request Request) (Response, error) {
 		return Response{StatusCode: 400, Body: string(body)}, err
 	}
 
-	packsRequired := calculator.PackCalculator(order, defaultPacks)
+	packsRequired, err := calculator.PackCalculator(order, defaultPacks)
+	if err != nil {
+		resp := map[string]string{
+			"message": err.Error(),
+		}
+		body, err := json.Marshal(resp)
+		return Response{StatusCode: 400, Body: string(body)}, err
+	}
 
 	respData := CalculateResponse{
 		Packs: []PackOrder{},

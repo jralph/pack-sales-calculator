@@ -1,23 +1,34 @@
 package calculator
 
 import (
+	"errors"
 	"sort"
 )
 
 // PackCalculator calculates the minimum amount of items to
 // send to a user, while also sending out as few packs as possible
 // and never using partial packs.
-func PackCalculator(orderAmount int, packs []int) map[int]int {
+func PackCalculator(orderAmount int, packs []int) (map[int]int, error) {
 	selected := make(map[int]int)
 
 	// If this is 0, we just return an empty selection of packs.
 	// This is about 4x more efficient than letting the order
 	// for 0 proceed through the rest of the algorithm.
-	if orderAmount == 0 {
-		return selected
+	if orderAmount <= 0 {
+		return selected, errors.New("order amount was negative or zero")
 	}
 
 	sort.Sort(sort.Reverse(sort.IntSlice(packs)))
+
+	// Remove any negative packs as these are invalid.
+	for i, pack := range packs {
+		if pack <= 0 && len(packs) == 1 {
+			return selected, errors.New("all packs are negative or zero")
+		} else if pack <= 0 {
+			copy(packs[i:], packs[i+1:])
+			packs = packs[:len(packs)-1]
+		}
+	}
 
 	smallest := packs[len(packs) - 1]
 
@@ -25,7 +36,7 @@ func PackCalculator(orderAmount int, packs []int) map[int]int {
 	// we return early. This is slightly more efficient.
 	if orderAmount <= smallest {
 		selected[smallest]++
-		return selected
+		return selected, nil
 	}
 
 	// If the order is equal to any of the packs we have we
@@ -33,7 +44,7 @@ func PackCalculator(orderAmount int, packs []int) map[int]int {
 	for _, pack := range packs {
 		if orderAmount == pack {
 			selected[pack]++
-			return selected
+			return selected, nil
 		}
 	}
 
@@ -50,5 +61,5 @@ func PackCalculator(orderAmount int, packs []int) map[int]int {
 		}
 	}
 
-	return selected
+	return selected, nil
 }

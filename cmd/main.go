@@ -30,5 +30,10 @@ func main() {
 		packs = append(packs, size)
 	}
 
-	fmt.Println(calculator.PackCalculator(order, packs))
+	result, err := calculator.PackCalculator(order, packs)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(result)
+	}
 }

@@ -12,7 +12,7 @@ var smallPacks = []int{1, 2, 5, 10, 20, 50}
 
 func benchmarkPackCalculator(i int, packs []int, b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		_ = PackCalculator(i, packs)
+		_, _ = PackCalculator(i, packs)
 	}
 }
 
@@ -57,60 +57,106 @@ func BenchmarkPackCalculator12001WithSmall(b *testing.B) {
 }
 
 func TestPackCalculator_returns0For0(t *testing.T) {
-	result := PackCalculator(0, defaultPacks)
+	result, err := PackCalculator(0, defaultPacks)
 
 	assert.Empty(t, result)
+	assert.Errorf(t, err, "order amount was negative or zero")
+}
+
+func TestPackCalculator_returns0ForNegative(t *testing.T) {
+	result, err := PackCalculator(-1, defaultPacks)
+
+	assert.Empty(t, result)
+	assert.Errorf(t, err, "order amount was negative or zero")
 }
 
 func TestPackCalculator_returns1x250For1(t *testing.T) {
-	result := PackCalculator(1, defaultPacks)
+	result, err := PackCalculator(1, defaultPacks)
 
-	assert.Equal(t, result, map[int]int{
+	assert.Equal(t, map[int]int{
 		250: 1,
-	})
+	}, result)
+	assert.Nil(t, err)
 }
 
 func TestPackCalculator_returns1x250For250(t *testing.T) {
-	result := PackCalculator(250, defaultPacks)
+	result, err := PackCalculator(250, defaultPacks)
 
-	assert.Equal(t, result, map[int]int{
+	assert.Equal(t, map[int]int{
 		250: 1,
-	})
+	}, result)
+	assert.Nil(t, err)
 }
 
 func TestPackCalculator_returns1x500For251(t *testing.T) {
-	result := PackCalculator(251, defaultPacks)
+	result, err := PackCalculator(251, defaultPacks)
 
-	assert.Equal(t, result, map[int]int{
+	assert.Equal(t, map[int]int{
 		500: 1,
-	})
+	}, result)
+	assert.Nil(t, err)
 }
 
 func TestPackCalculator_returns1x500and1x250For501(t *testing.T) {
-	result := PackCalculator(501, defaultPacks)
+	result, err := PackCalculator(501, defaultPacks)
 
-	assert.Equal(t, result, map[int]int{
+	assert.Equal(t, map[int]int{
 		500: 1,
 		250: 1,
-	})
+	}, result)
+	assert.Nil(t, err)
 }
 
 func TestPackCalculator_returns2x2000and1x500and1x250for4750(t *testing.T) {
-	result := PackCalculator(4750, defaultPacks)
+	result, err := PackCalculator(4750, defaultPacks)
 
-	assert.Equal(t, result, map[int]int{
+	assert.Equal(t, map[int]int{
 		2000: 2,
 		500: 1,
 		250: 1,
-	})
+	}, result)
+	assert.Nil(t, err)
 }
 
 func TestPackCalculator_returns2x5000and1x2000and1x250For12001(t *testing.T) {
-	result := PackCalculator(12001, defaultPacks)
+	result, err := PackCalculator(12001, defaultPacks)
 
-	assert.Equal(t, result, map[int]int{
+	assert.Equal(t, map[int]int{
 		5000: 2,
 		2000: 1,
 		250: 1,
-	})
+	}, result)
+	assert.Nil(t, err)
+}
+
+func TestPackCalculator_handlesPacksOfNegatives(t *testing.T) {
+	result, err := PackCalculator(1000, []int{-250, -100})
+
+	assert.Empty(t, result)
+	assert.Errorf(t, err, "all packs are negative or zero")
+}
+
+func TestPackCalculator_handlesPacksContainingNegatives(t *testing.T) {
+	result, err := PackCalculator(250, []int{-100, 250})
+
+	assert.Equal(t, map[int]int{
+		250: 1,
+	}, result)
+	assert.Nil(t, err)
+}
+
+func TestPackCalculator_handlesPacksOfZero(t *testing.T) {
+	result, err := PackCalculator(1000, []int{0})
+
+	assert.Empty(t, result)
+	assert.Errorf(t, err, "all packs are negative or zero")
+}
+
+func TestPackCalculator_handlesPacksContainingZero(t *testing.T) {
+	result, err := PackCalculator(250, []int{0, 250})
+
+	assert.Equal(t, map[int]int{
+		250: 1,
+	}, result)
+	assert.Nil(t, err)
 }
