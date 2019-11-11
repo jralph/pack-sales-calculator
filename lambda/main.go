@@ -19,12 +19,12 @@ type Response events.APIGatewayProxyResponse
 type Request events.APIGatewayProxyRequest
 
 type PackOrder struct {
-	Size int `json:size`
-	Amount int `json:amount`
+	Size int
+	Amount int
 }
 
 type CalculateResponse struct {
-	Packs []PackOrder `json:packs`
+	Packs []PackOrder
 }
 
 // Handler is our lambda handler invoked by the `lambda.Start` function call
@@ -61,7 +61,7 @@ func Handler(request Request) (Response, error) {
 			size, err := strconv.Atoi(pack)
 			if err != nil {
 				resp := map[string]string{
-					"message": "please specify a comma seperated list of numbers for the packs query parameter",
+					"message": "please specify a comma separated list of numbers for the packs query parameter",
 				}
 				body, err := json.Marshal(resp)
 				return Response{StatusCode: 400, Body: string(body)}, err
