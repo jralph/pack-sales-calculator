@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var defaultPacks = []int{250,500,1000,2000,5000}
+var defaultPacks = []int{250, 500, 1000, 2000, 5000}
 var largePacks = []int{25000, 50000, 100000, 200000, 500000}
 var smallPacks = []int{1, 2, 5, 10, 20, 50}
 
@@ -124,8 +124,8 @@ func TestPackCalculator_returns2x2000and1x500and1x250for4750(t *testing.T) {
 
 	assert.Equal(t, map[int]int{
 		2000: 2,
-		500: 1,
-		250: 1,
+		500:  1,
+		250:  1,
 	}, result)
 	assert.Nil(t, err)
 }
@@ -136,7 +136,7 @@ func TestPackCalculator_returns2x5000and1x2000and1x250For12001(t *testing.T) {
 	assert.Equal(t, map[int]int{
 		5000: 2,
 		2000: 1,
-		250: 1,
+		250:  1,
 	}, result)
 	assert.Nil(t, err)
 }
@@ -187,4 +187,22 @@ func TestPackCalculator_handlesNoPacksGiven(t *testing.T) {
 
 	assert.Empty(t, result)
 	assert.Error(t, err, "no packs provided")
+}
+
+func TestPackCalculator_handlesPacksThatAreNotMultiples_v1(t *testing.T) {
+	result, err := PackCalculator(100, []int{33, 90, 97, 102})
+
+	assert.Equal(t, map[int]int{
+		102: 1,
+	}, result)
+	assert.Nil(t, err)
+}
+
+func TestPackCalculator_handlesPacksThatAreNotMultiples_v2(t *testing.T) {
+	result, err := PackCalculator(93, []int{33, 90})
+
+	assert.Equal(t, map[int]int{
+		33: 3,
+	}, result)
+	assert.Nil(t, err)
 }

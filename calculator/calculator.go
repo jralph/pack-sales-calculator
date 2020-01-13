@@ -70,5 +70,32 @@ func PackCalculator(orderAmount int, packs []int) (map[int]int, error) {
 		}
 	}
 
+	// Fix for when packs are not multiples of the smallest pack.
+	if newOrderAmount > 0 {
+		iterations := timesDivisible
+		currentLowestTotal := smallest * timesDivisible
+		selectedPack := smallest
+
+		for _, pack := range packs {
+			lowestTotal := 0
+			packIterations := 0
+			for lowestTotal < orderAmount {
+				lowestTotal += pack
+				packIterations++
+			}
+
+			if lowestTotal < currentLowestTotal {
+				currentLowestTotal = lowestTotal
+				iterations = packIterations
+				selectedPack = pack
+				break
+			}
+		}
+
+		selected = map[int]int{
+			selectedPack: iterations,
+		}
+	}
+
 	return selected, nil
 }
