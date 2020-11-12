@@ -18,21 +18,21 @@ These are the results received are:
 goos: darwin
 goarch: amd64
 pkg: pack-sales-calculator/calculator
-BenchmarkPackCalculatorNegativeWithDefault-8      	14820410	        79.3 ns/op	      64 B/op	       2 allocs/op
-BenchmarkPackCalculator0WithDefault-8             	14581399	        79.3 ns/op	      64 B/op	       2 allocs/op
-BenchmarkPackCalculator1WithDefault-8             	 4616272	       242 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator250WithDefault-8           	 4864417	       243 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator500WithDefault-8           	 4673331	       247 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator1000WithDefault-8          	 4915204	       246 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator12001WithDefault-8         	 3785590	       317 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator12001WithLarge-8           	 4900058	       243 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator47501043056WithDefault-8   	       9	 114751263 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator47501043056WithLarge-8     	    1081	   1133706 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator12001WithSmall-8           	  347701	      3158 ns/op	     240 B/op	       4 allocs/op
-BenchmarkPackCalculator250WithAllNegatives-8      	 6015590	       226 ns/op	     112 B/op	       4 allocs/op
-BenchmarkPackCalculator250WithSomeNegatives-8     	 4249892	       353 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculatorNegativeWithDefault-12       	19926258	        59.6 ns/op	      64 B/op	       2 allocs/op
+BenchmarkPackCalculator0WithDefault-12              	19726498	        60.3 ns/op	      64 B/op	       2 allocs/op
+BenchmarkPackCalculator1WithDefault-12              	 6409830	       176 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator250WithDefault-12            	 6720063	       179 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator500WithDefault-12            	 6687548	       177 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator1000WithDefault-12           	 6699860	       185 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator12001WithDefault-12          	 4577499	       254 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator12001WithLarge-12            	 6715616	       175 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator47501043056WithDefault-12    	 4263607	       281 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator47501043056WithLarge-12      	 5175243	       229 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator12001WithSmall-12            	 4733602	       236 ns/op	     240 B/op	       4 allocs/op
+BenchmarkPackCalculator250WithAllNegatives-12       	 8281035	       142 ns/op	     112 B/op	       4 allocs/op
+BenchmarkPackCalculator250WithSomeNegatives-12      	 6288799	       184 ns/op	     240 B/op	       4 allocs/op
 PASS
-ok  	pack-sales-calculator/calculator	18.411s
+ok  	pack-sales-calculator/calculator	24.407s
 ```
 
 ## CLI Usage

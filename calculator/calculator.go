@@ -39,7 +39,7 @@ func PackCalculator(orderAmount int, packs []int) (map[int]int, error) {
 		return selected, errors.New("all packs are negative or zero")
 	}
 
-	smallest := packs[len(packs) - 1]
+	smallest := packs[len(packs)-1]
 
 	// If the order is equal to or smaller than the smallest pack
 	// we return early. This is slightly more efficient.
@@ -64,9 +64,9 @@ func PackCalculator(orderAmount int, packs []int) (map[int]int, error) {
 	newOrderAmount := timesDivisible * smallest
 
 	for _, pack := range packs {
-		for newOrderAmount >= pack {
-			newOrderAmount -= pack
-			selected[pack]++
+		if newOrderAmount >= pack {
+			selected[pack] = newOrderAmount / pack
+			newOrderAmount = newOrderAmount - (selected[pack] * pack)
 		}
 	}
 
