@@ -130,6 +130,16 @@ func TestPackCalculator_returns2x2000and1x500and1x250for4750(t *testing.T) {
 	assert.Nil(t, err)
 }
 
+func TestPackCalculator_returns2x5000and1x1000For10900(t *testing.T) {
+	result, err := PackCalculator(10900, defaultPacks)
+
+	assert.Equal(t, map[int]int{
+		5000: 2,
+		1000: 1,
+	}, result)
+	assert.Nil(t, err)
+}
+
 func TestPackCalculator_returns2x5000and1x2000and1x250For12001(t *testing.T) {
 	result, err := PackCalculator(12001, defaultPacks)
 
@@ -137,6 +147,16 @@ func TestPackCalculator_returns2x5000and1x2000and1x250For12001(t *testing.T) {
 		5000: 2,
 		2000: 1,
 		250:  1,
+	}, result)
+	assert.Nil(t, err)
+}
+
+func TestPackCalculator_returns18x5000and1x1000For90909(t *testing.T) {
+	result, err := PackCalculator(90909, defaultPacks)
+
+	assert.Equal(t, map[int]int{
+		5000: 18,
+		1000: 1,
 	}, result)
 	assert.Nil(t, err)
 }
